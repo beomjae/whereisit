@@ -5,3 +5,16 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+user = User.create(email:"admin@scloudy.com", password:"admin")
+
+user.categories.create(
+    [
+        {name:'Public Toilet'},
+        {name:'Cafe'},
+        {name:'Parking lot'},
+        {name:'Market'},
+        {name:'Public Library'}
+    ]
+)
+
