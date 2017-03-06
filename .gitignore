@@ -31,3 +31,5 @@ doc/app
 
 /.idea/*
 whereisit.iml
+# Ignore application configuration
+/config/application.yml
