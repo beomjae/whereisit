@@ -28,13 +28,69 @@
 
 <div id="map" style="width: 100%; height: 400px;"></div>
 <script>
-    function initMap() {
-        // Create a map object and specify the DOM element for display.
-        var map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: -34.397, lng: 150.644},
-            scrollwheel: false,
-            zoom: 8
+    var map;
+    var markers = [];
+
+    function addMarker(item) {
+        var marker = new google.maps.Marker({
+            position: {lat: parseFloat(item.latitude), lng:parseFloat(item.longitude)},
+            map: map,
+            title: item.name
         });
+
+        var contentString = '<div id="content">'+ item.name + '</div>';
+
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+
+        marker.addListener('click', function() {
+            infowindow.open(map, marker);
+        });
+
+        markers.push(marker);
+    }
+
+    // Sets the map on all markers in the array.
+    function setMapOnAll(map) {
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(map);
+        }
+    }
+
+    // Removes the markers from the map, but keeps them in the array.
+    function clearMarkers() {
+        setMapOnAll(null);
+    }
+
+    // Shows any markers currently in the array.
+    function showMarkers() {
+        setMapOnAll(map);
+    }
+
+    // Deletes all markers in the array by removing references to them.
+    function deleteMarkers() {
+        clearMarkers();
+        markers = [];
+    }
+
+    function updateMapMarkers() {
+        deleteMarkers();
+        $.getJSON("/items.json", function(data){
+            console.log(data);
+            _.each(data, function(item) {
+                addMarker(item, map);
+            });
+        });
+    }
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 33.503243, lng: 126.519997},
+            zoom: 13
+        });
+
+        updateMapMarkers();
     }
 
 </script>

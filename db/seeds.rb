@@ -18,3 +18,12 @@ user.categories.create(
     ]
 )
 
+category1 = Category.find_by({name: 'Cafe'})
+
+category1.items.create(
+     [
+         {name: '몽상드애월', latitude: 33.462887, longitude: 126.309132, user_id:1 },
+         {name: '모드락', latitude: 33.516127, longitude: 126.508950, user_id:1  },
+         {name: '커피동굴', latitude: 33.514560, longitude: 126.539192, user_id:1  }
+     ]
+)
