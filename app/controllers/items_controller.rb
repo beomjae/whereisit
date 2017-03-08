@@ -4,7 +4,11 @@ class ItemsController < ApplicationController
   # GET /items
   # GET /items.json
   def index
-    @items = Item.all
+    if params[:searchKeyword].present?
+      @items = Item.where("name LIKE ?", "%#{params[:searchKeyword]}%").uniq
+    else
+      @items = Item.all
+    end
   end
 
   # GET /items/1
