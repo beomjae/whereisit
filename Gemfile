@@ -58,4 +58,8 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "figaro"
 
+gem 'activeadmin', '~> 1.0.0.pre5'
+gem 'inherited_resources', git: 'https://github.com/activeadmin/inherited_resources'
+gem 'devise'
+
 ruby '2.4.0'
