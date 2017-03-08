@@ -5,9 +5,9 @@ class ItemsController < ApplicationController
   # GET /items.json
   def index
     if params[:searchKeyword].present?
-      @items = Item.where("name LIKE ?", "%#{params[:searchKeyword]}%").uniq
+      @items = Item.where("category_id = ? and name LIKE ?", params[:categoryId] ,"%#{params[:searchKeyword]}%", ).uniq
     else
-      @items = Item.all
+      @items = Item.where(category_id: params[:categoryId])
     end
   end
 

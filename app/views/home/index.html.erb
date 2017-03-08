@@ -6,11 +6,20 @@
 
 <div class="row">
     <div class="col-xs-7 text-center">
-      <span >Public Toilet</span>
+      <p id="current-category-name" class="lead"><%= @categories.first.name %></p>
+      <input type="hidden" id="current-category-id" name="current-category-id" value="<%= @categories.first.id %>" />
     </div>
     <div class="col-xs-5">
-      <button class="btn btn-primary btn-block">CATEGORY</button>
+      <button id="btn-category" class="btn btn-primary btn-block">CATEGORY</button>
     </div>
+</div>
+
+<div id="container-category-buttons" class="row">
+  <div class="col-xs-12">
+    <% @categories.each do |category| %>
+      <button class="btn btn-sm btn-default btn-select-category" data-category-id="<%= category.id %>" data-category-name="<%= category.name %>"><%= category.name %></button>
+    <% end %>
+  </div>
 </div>
 
 <div class="row">
@@ -27,6 +36,14 @@
 </div>
 
 <div id="map" style="width: 100%; height: 400px;"></div>
+
+<style>
+  #container-category-buttons {
+    display: none;
+  }
+
+  .row{margin-top:5px; margin-bottom: 5px;}
+</style>
 <script>
     var map;
     var markers = [];
@@ -76,7 +93,10 @@
 
     function updateMapMarkers() {
         deleteMarkers();
-        $.getJSON("/items.json?searchKeyword=" + $("#searchKeyword").val(), function(data){
+        var url = "/items.json"
+            + "?searchKeyword=" + $("#searchKeyword").val()
+            + "&categoryId=" + $("#current-category-id").val();
+        $.getJSON(url, function(data){
             console.log(data);
             _.each(data, function(item) {
                 addMarker(item, map);
@@ -96,8 +116,17 @@
     function initEvent() {
         console.log("initEvent");
         $("#btnSearchKeyword").on("click", function(){
-            console.log("click");
             updateMapMarkers();
+        });
+
+        $(".btn-select-category").on("click", function(){
+          $("#current-category-id").val($(this).data('category-id'));
+          $("#current-category-name").html($(this).data('category-name'));
+          updateMapMarkers();
+        });
+
+        $("#btn-category").on("click", function(){
+            $("#container-category-buttons").toggle();
         });
     }
 
